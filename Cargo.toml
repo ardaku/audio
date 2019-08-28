@@ -1,8 +1,10 @@
 [package]
-name = "opus-no"
+name = "oped"
 version = "0.1.0"
 authors = ["Jeron Aldaron Lau <jeronlau@plopgrizzly.com>"]
 edition = "2018"
+
+build = "build.rs"
 
 description = "Opus (eventually) no C (pure Rust)."
 readme = "README.md"
@@ -10,8 +12,17 @@ license = "MIT/BSL-1.0"
 keywords = ["opus", "codec", "stream", "sound", "audio"]
 categories = ["api-bindings", "encoding", "compression",
 	"multimedia::audio", "multimedia::encoding"]
-repository = "https://github.com/libcala/opus-no"
-documentation = "https://docs.rs/opus-no/"
+repository = "https://github.com/libcala/oped"
+documentation = "https://docs.rs/oped/"
+
+[build-dependencies]
+cc = { version = "1.0", features = ["parallel"] }
+
+[dev-dependencies]
+actix-web = "1.0"
+listenfd = "0.3"
+wavy = "0.1"
+futures = "0.1"
 
 [dependencies]
 lazy_static = "1.3"
