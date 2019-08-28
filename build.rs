@@ -1,6 +1,13 @@
 use cc;
 
 fn main() {
+    // Compile Ogg
+    cc::Build::new()
+        .file("lib/ogg/bitwise.c")
+        .file("lib/ogg/framing.c")
+        .include("lib/ogg")
+        .compile("ogg");
+
     // Compile Opus
     cc::Build::new()
         .file("lib/opus/analysis.c")
