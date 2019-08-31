@@ -43,12 +43,23 @@ fn recording_thread(rec: Recorder) {
     println!("Opened microphone system");
 
     loop {
-        buffer.clear();
         mic.record(&mut |_index, l, r| {
-            buffer.push((l, r));
+            buffer.push(l);
+            buffer.push(r);
         });
 
-        let data = if let Some(data) = stream_encoder.encode(&buffer) {
+        if buffer.len() < 1920 * 2 {
+            continue;
+        }
+
+        let mut buf: [i16; 1920 * 2] = [0; 1920 * 2];
+        let mut index = 0;
+        for x in buffer.drain(..(1920 * 2)) {
+            buf[index] = x;
+            index += 1;
+        }
+
+        let data = if let Some(data) = stream_encoder.encode(&buf) {
             data
         } else {
             continue;
@@ -58,7 +69,8 @@ fn recording_thread(rec: Recorder) {
         let mut sends = rec.senders.lock().unwrap();
         for send in 0..sends.len() {
             let mut bytes = Bytes::new();
-            bytes.extend_from_slice(data);
+            bytes.extend_from_slice(data.0);
+            bytes.extend_from_slice(data.1);
             if (*sends)[send].unbounded_send(bytes).is_err() {
                 trash.push(send);
             }

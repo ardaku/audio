@@ -944,7 +944,6 @@ static void tonality_analysis(TonalityAnalysisState *tonal, const CELTMode *celt
 
     info->bandwidth = bandwidth;
     tonal->prev_bandwidth = bandwidth;
-    /*printf("%d %d\n", info->bandwidth, info->opus_bandwidth);*/
     info->noisiness = frame_noisiness;
     info->valid = 1;
     RESTORE_STACK;
