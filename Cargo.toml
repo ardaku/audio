@@ -22,7 +22,7 @@ cc = { version = "1.0", features = ["parallel"] }
 actix-web = "1.0"
 listenfd = "0.3"
 wavy = "0.1"
-futures = "0.1"
+futures = "0.3"
 
 [dependencies]
 lazy_static = "1.3"
