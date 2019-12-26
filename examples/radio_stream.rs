@@ -2,7 +2,7 @@
 
 use actix_web::{HttpServer, App as ActixApp, HttpRequest, HttpResponse, web::{self, Bytes}};
 use listenfd::ListenFd;
-use futures::sync::mpsc;
+use futures::channel::mpsc;
 use std::sync::{Arc, Mutex};
 use wavy::{MicrophoneSystem, SampleRate};
 use oped;
@@ -68,9 +68,9 @@ fn recording_thread(rec: Recorder) {
         // Send audio to each listener.
         let mut sends = rec.senders.lock().unwrap();
         for send in 0..sends.len() {
-            let mut bytes = Bytes::new();
-            bytes.extend_from_slice(data.0);
-            bytes.extend_from_slice(data.1);
+            let mut bytes = Bytes::copy_from_slice(data.0);
+            let mut bytez = Bytes::copy_from_slice(data.1);
+            let bytes = Bytes::copy_from_slice(&[bytes, bytez].concat());
             if (*sends)[send].unbounded_send(bytes).is_err() {
                 trash.push(send);
             }
@@ -105,7 +105,7 @@ fn main() {
     let mut server = HttpServer::new(move || {
         let senders = senders.clone();
         ActixApp::new()
-            .service(web::resource("/listen").route(
+            /*.service(web::resource("/listen").route(
                 web::get().to(move |_req: HttpRequest| {
                     HttpResponse::Ok()
                         .content_type("application/ogg")
@@ -120,7 +120,7 @@ fn main() {
             )))
             .default_service(
                 web::get().to( load_404 )
-            )
+            )*/
     });
 
     server = if let Some(l) = listenfd.take_tcp_listener(0).unwrap() {
@@ -129,5 +129,5 @@ fn main() {
         server.bind(ip_port).unwrap()
     };
 
-    server.run().unwrap();
+    server.run();
 }
