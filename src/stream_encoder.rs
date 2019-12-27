@@ -123,6 +123,11 @@ impl StreamEncoder {
 
     }
 
+    /// Get generated header
+    pub fn head(&self) -> &[u8] {
+        &self.headers
+    }
+
     /// Drain opus pages
     pub fn page(&mut self) -> Option<(&[u8], &[u8])> {
         let ret = self.stream.drain()?;
