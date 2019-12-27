@@ -130,15 +130,15 @@ impl OggStreamState {
     }
 
     /// Encode bitstream with Container.
-    pub fn encode(&mut self, data: &mut [u8], last_sample_pos: i64, packet_no: i64, begin: bool, end: bool) -> Option<(&[u8], &[u8])> {
+    pub fn encode(&mut self, data: &mut [u8], last_sample_pos: i64, packet_no: i64, begin: bool, end: bool) {
         // Create The OggPacket from Opus data.
         let mut packet = OggPacket {
-          packet: data.as_mut_ptr(),
-          bytes: data.len() as isize,
-          b_o_s: if begin { 1 } else { 0 },
-          e_o_s: if end { 1 } else { 0 },
-          granulepos: last_sample_pos,
-          packetno: packet_no,
+            packet: data.as_mut_ptr(),
+            bytes: data.len() as isize,
+            b_o_s: if begin { 1 } else { 0 },
+            e_o_s: if end { 1 } else { 0 },
+            granulepos: last_sample_pos,
+            packetno: packet_no,
         };
 
         // Add OggPacket to OggStreamState
@@ -147,7 +147,9 @@ impl OggStreamState {
                 panic!("Failed encoding OggPacket into OggStreamState");
             }
         }
+    }
 
+    pub fn drain(&mut self) -> Option<(&[u8], &[u8])> {
         // Create an Ogg Page if enough data is available.
         let mut page = std::mem::MaybeUninit::uninit();
         unsafe {
