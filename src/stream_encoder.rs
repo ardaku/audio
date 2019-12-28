@@ -1,5 +1,7 @@
 use crate::ffi::*;
 
+unsafe impl Send for StreamEncoder {}
+
 /// An Ogg Opus Stream Encoder.
 pub struct StreamEncoder {
     encoder: *mut OpusEncoder,
