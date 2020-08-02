@@ -8,7 +8,7 @@ build = "build.rs"
 
 description = "Opus (eventually) no C (pure Rust)."
 readme = "README.md"
-license = "MIT/BSL-1.0"
+license = "MIT OR Apache-2.0 OR Zlib"
 keywords = ["opus", "codec", "stream", "sound", "audio"]
 categories = ["api-bindings", "encoding", "compression",
 	"multimedia::audio", "multimedia::encoding"]
