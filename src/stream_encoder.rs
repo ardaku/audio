@@ -39,7 +39,8 @@ impl StreamEncoder {
 
         self.packet_no += 1;
 
-        self.stream.encode(&mut self.temp, 0, self.packet_no, false, false);
+        self.stream
+            .encode(&mut self.temp, 0, self.packet_no, false, false);
         let (head, body) = self.stream.drain().unwrap();
 
         self.headers.extend(head);
@@ -65,7 +66,8 @@ impl StreamEncoder {
 
         self.packet_no += 1;
 
-        self.stream.encode(&mut self.temp, 0, self.packet_no, false, false);
+        self.stream
+            .encode(&mut self.temp, 0, self.packet_no, false, false);
         while let Some((head, body)) = self.stream.drain() {
             self.headers.extend(head);
             self.headers.extend(body);
@@ -78,17 +80,17 @@ impl StreamEncoder {
         self.comment_header();
     }
 
-    pub fn new(/*sample_rate: u32, channels: Channels, application: Application*/)
-        -> Self
-    {
-        let mut temp = vec![];
-        let mut headers = vec![];
+    /// Create a new stream encoder.
+    #[allow(clippy::new_without_default)]
+    pub fn new(/*sample_rate: u32, channels: Channels, application: Application*/) -> Self {
+        let temp = vec![];
+        let headers = vec![];
 
         // Shouldn't fail.
         let encoder = OpusEncoder::new(48000, 2, false /*not VOIP*/).unwrap();
         let stream = OggStreamState::new().unwrap();
 
-/*        let comments = Comments::new();
+        /*        let comments = Comments::new();
         comments.add("ARTIST", "Someone");
         comments.add("TITLE", "Some track");
         let encoder = Encoder::new(
@@ -101,8 +103,12 @@ impl StreamEncoder {
         let mut this = Self {
             temp,
             headers,
-//            comments,
-            stream, encoder, last_sample_pos: -1, packet_no: -1, begin: true,
+            //            comments,
+            stream,
+            encoder,
+            last_sample_pos: -1,
+            packet_no: -1,
+            begin: true,
         };
 
         // Generate header packets.
@@ -118,11 +124,15 @@ impl StreamEncoder {
 
         let mut packet = [0u8; 4000]; // This is the recommended size by xiph
         let packet_len = OpusEncoder::encode(self.encoder, samples, &mut packet);
-        self.stream.encode(&mut packet[..packet_len], self.last_sample_pos, self.packet_no, self.begin, false /*not the end*/);
+        self.stream.encode(
+            &mut packet[..packet_len],
+            self.last_sample_pos,
+            self.packet_no,
+            self.begin,
+            false, /*not the end*/
+        );
 
         self.begin = false;
-
-
     }
 
     /// Get generated header

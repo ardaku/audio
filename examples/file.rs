@@ -1,5 +1,3 @@
 use std::fs::File;
 
-fn main() {
-    
-}
+fn main() {}

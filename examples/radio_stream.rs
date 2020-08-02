@@ -1,16 +1,16 @@
 //! This example creates an internet radio stream over HTTP.
 
-use actix_web::{HttpServer, App as ActixApp, HttpRequest, HttpResponse, web::{self, Bytes}};
-use listenfd::ListenFd;
+use actix_web::{
+    web::{self, Bytes},
+    App as ActixApp, HttpRequest, HttpResponse, HttpServer,
+};
 use futures::channel::mpsc;
+use listenfd::ListenFd;
 use std::sync::{Arc, Mutex};
-use wavy::{MicrophoneSystem, SampleRate};
-use oped;
+use wavy::Recorder as Mic;
 
 fn load_404<'a>(html: String) -> impl actix_web::Responder {
-    HttpResponse::Ok()
-        .content_type("text/html")
-        .body("404")
+    HttpResponse::Ok().content_type("text/html").body("404")
 }
 
 // All of the senders for sending audio data.
@@ -31,7 +31,7 @@ impl Recorder {
 fn recording_thread(rec: Recorder) {
     let mut mic;
     let mut buffer = Vec::new();
-    let mut stream_encoder = oped::StreamEncoder::new(/*
+    let mut stream_encoder = ogg_opus::StreamEncoder::new(/*
         48000,              // Sample rate (Hz)
         Channels::Stereo,   // Stereo
         Application::Audio, // High quality audio (for music, rather than voice)
@@ -39,7 +39,7 @@ fn recording_thread(rec: Recorder) {
     let mut trash = vec![];
 
     println!("Opening microphone system");
-    mic = MicrophoneSystem::new(SampleRate::Normal).unwrap();
+    mic = Mic::new().unwrap();
     println!("Opened microphone system");
 
     loop {
@@ -81,7 +81,7 @@ fn recording_thread(rec: Recorder) {
             (*sends).remove(trash);
         }
 
-/*        speaker.play(&mut || {
+        /*        speaker.play(&mut || {
             if let Some((lsample, rsample)) = buffer.pop_front() {
                 AudioSample::stereo(lsample, rsample)
             } else {
@@ -105,22 +105,22 @@ fn main() {
     let mut server = HttpServer::new(move || {
         let senders = senders.clone();
         ActixApp::new()
-            /*.service(web::resource("/listen").route(
-                web::get().to(move |_req: HttpRequest| {
-                    HttpResponse::Ok()
-                        .content_type("application/ogg")
-                        .streaming({
-                            let (send, recv) = mpsc::unbounded();
-                            let mut sends = senders.lock().unwrap();
+        /*.service(web::resource("/listen").route(
+            web::get().to(move |_req: HttpRequest| {
+                HttpResponse::Ok()
+                    .content_type("application/ogg")
+                    .streaming({
+                        let (send, recv) = mpsc::unbounded();
+                        let mut sends = senders.lock().unwrap();
 
-                            sends.push(send);
-                            recv
-                        })
-                }
-            )))
-            .default_service(
-                web::get().to( load_404 )
-            )*/
+                        sends.push(send);
+                        recv
+                    })
+            }
+        )))
+        .default_service(
+            web::get().to( load_404 )
+        )*/
     });
 
     server = if let Some(l) = listenfd.take_tcp_listener(0).unwrap() {

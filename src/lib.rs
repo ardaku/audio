@@ -6,10 +6,10 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-//! High-level bindings for libopus.
-//!
-//! Only brief descriptions are included here. For detailed information, consult
-//! the [libopus documentation](https://opus-codec.org/docs/opus_api-1.1.2/).
+// **Note**: Currently converting C to Rust - Use
+// [libopus documentation](https://opus-codec.org/docs/opus_api-1.1.2/) to help.
+
+//! Ogg Opus encoder and decoder in pure Rust (WIP - currently not pure Rust).
 #![warn(missing_docs)]
 
 extern crate libc;
