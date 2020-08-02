@@ -12,8 +12,8 @@ license = "MIT/BSL-1.0"
 keywords = ["opus", "codec", "stream", "sound", "audio"]
 categories = ["api-bindings", "encoding", "compression",
 	"multimedia::audio", "multimedia::encoding"]
-repository = "https://github.com/libcala/oped"
-documentation = "https://docs.rs/oped/"
+repository = "https://github.com/libcala/ogg_opus"
+documentation = "https://docs.rs/ogg_opus/"
 
 [build-dependencies]
 cc = { version = "1.0", features = ["parallel"] }

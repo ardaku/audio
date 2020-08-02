@@ -51,7 +51,7 @@ impl StreamEncoder {
     fn comment_header(&mut self) {
         // Reference: https://tools.ietf.org/html/rfc7845.html#section-5.2
 
-        let vendor = b"rust-opus-no";
+        let vendor = b"rust-ogg_opus";
 
         // Clear temporary byte buffer.
         self.temp.clear();
