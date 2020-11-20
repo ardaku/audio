@@ -7,7 +7,7 @@ use actix_web::{
 use futures::channel::mpsc;
 use listenfd::ListenFd;
 use std::sync::{Arc, Mutex};
-use wavy::Recorder as Mic;
+use wavy::Microphone as Mic;
 
 fn load_404<'a>(html: String) -> impl actix_web::Responder {
     HttpResponse::Ok().content_type("text/html").body("404")
