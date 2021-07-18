@@ -1,0 +1,22 @@
+# RAW Audio
+# Copyright © 2021 Jeron Aldaron Lau.
+#
+# Licensed under the Boost Software License, Version 1.0
+# (https://www.boost.org/LICENSE_1_0.txt or see accompanying file
+# LICENSE_BOOST_1_0.txt)
+
+[package]
+name = "raw_audio"
+version = "0.0.1"
+authors = ["Jeron Aldaron Lau <jeronlau@plopgrizzly.com>"]
+edition = "2018"
+
+description = "Audio PCM format encoding/decoding"
+license = "BSL-1.0"
+license-file = "LICENSE"
+documentation = "https://docs.rs/raw_audio"
+homepage = "https://github.com/AldaronLau/raw_audio/blob/main/CHANGELOG.md"
+repository = "https://github.com/AldaronLau/raw_audio"
+
+[dependencies]
+fon = "0.5"
