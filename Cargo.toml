@@ -1,7 +1,7 @@
 [workspace]
 members = [
     "ogg_opus",
-    "riff_wave",
+    "riff_wav",
     "flak",
     "raw_audio",
 ]

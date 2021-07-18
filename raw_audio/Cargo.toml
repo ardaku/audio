@@ -13,7 +13,6 @@ edition = "2018"
 
 description = "Audio PCM format encoding/decoding"
 license = "BSL-1.0"
-license-file = "LICENSE"
 documentation = "https://docs.rs/raw_audio"
 homepage = "https://github.com/AldaronLau/raw_audio/blob/main/CHANGELOG.md"
 repository = "https://github.com/AldaronLau/raw_audio"
